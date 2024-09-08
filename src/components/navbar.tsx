@@ -9,7 +9,7 @@ interface NavbarProps {
 
 const Navbar: React.FC<NavbarProps> = ({ isKeycloakPage }) => {
   return (
-    <nav className="border-b border-border p-4">
+    <nav className="border-b border-none p-4 outline-none">
       <div className="flex justify-between items-center px-4">
         <Logo />
         <div className="flex space-x-4">

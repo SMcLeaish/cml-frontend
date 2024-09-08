@@ -11,7 +11,16 @@ import type { I18n } from "./i18n";
 import type { KcContext } from "./KcContext";
 import MainLayout from "@/layouts/main-layout";
 import Logo from "@/components/Logo";
-
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@radix-ui/react-dropdown-menu";
 export default function Template(props: TemplateProps<KcContext, I18n>) {
   const {
     displayInfo = false,
@@ -135,196 +144,188 @@ export default function Template(props: TemplateProps<KcContext, I18n>) {
 
   return (
     <MainLayout title="Login">
-      <div className={kcClsx("kcLoginClass")}>
-        <div id="kc-header" className={kcClsx("kcHeaderClass")}>
-          <div
-            id="kc-header-wrapper"
-            className={kcClsx("kcHeaderWrapperClass")}
-          >
-            {msg("loginTitleHtml", realm.displayNameHtml)}
-          </div>
-        </div>
-
-        <div className={kcClsx("kcFormCardClass")}>
-          <header className={kcClsx("kcFormHeaderClass")}>
-            {realm.internationalizationEnabled &&
-              (assert(locale !== undefined), locale.supported.length > 1) && (
-                <div className={kcClsx("kcLocaleMainClass")} id="kc-locale">
-                  <div
-                    id="kc-locale-wrapper"
-                    className={kcClsx("kcLocaleWrapperClass")}
-                  >
+      <div className="max-w-md mx-auto mt-10">
+        <Card>
+          <CardHeader>
+            <CardTitle>
+              <Logo />
+            </CardTitle>
+            <CardDescription>Login to your account</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <header className={kcClsx("kcFormHeaderClass")}>
+              {realm.internationalizationEnabled &&
+                (assert(locale !== undefined), locale.supported.length > 1) && (
+                  <div className={kcClsx("kcLocaleMainClass")} id="kc-locale">
                     <div
-                      id="kc-locale-dropdown"
-                      className={clsx(
-                        "menu-button-links",
-                        kcClsx("kcLocaleDropDownClass"),
-                      )}
+                      id="kc-locale-wrapper"
+                      className={kcClsx("kcLocaleWrapperClass")}
                     >
-                      <button
-                        tabIndex={1}
-                        id="kc-current-locale-link"
-                        aria-label={msgStr("languages")}
-                        aria-haspopup="true"
-                        aria-expanded="false"
-                        aria-controls="language-switch1"
+                      <div
+                        id="kc-locale-dropdown"
+                        className={clsx(
+                          "menu-button-links",
+                          kcClsx("kcLocaleDropDownClass"),
+                        )}
                       >
-                        {labelBySupportedLanguageTag[currentLanguageTag]}
-                      </button>
-                      <ul
-                        role="menu"
-                        tabIndex={-1}
-                        aria-labelledby="kc-current-locale-link"
-                        aria-activedescendant=""
-                        id="language-switch1"
-                        className={kcClsx("kcLocaleListClass")}
-                      >
-                        {locale.supported.map(({ languageTag }, i) => (
-                          <li
-                            key={languageTag}
-                            className={kcClsx("kcLocaleListItemClass")}
-                            role="none"
-                          >
-                            <a
-                              role="menuitem"
-                              id={`language-${i + 1}`}
-                              className={kcClsx("kcLocaleItemClass")}
-                              href={getChangeLocaleUrl(languageTag)}
+                        <button
+                          tabIndex={1}
+                          id="kc-current-locale-link"
+                          aria-label={msgStr("languages")}
+                          aria-haspopup="true"
+                          aria-expanded="false"
+                          aria-controls="language-switch1"
+                        >
+                          {labelBySupportedLanguageTag[currentLanguageTag]}
+                        </button>
+                        <ul
+                          role="menu"
+                          tabIndex={-1}
+                          aria-labelledby="kc-current-locale-link"
+                          aria-activedescendant=""
+                          id="language-switch1"
+                          className={kcClsx("kcLocaleListClass")}
+                        >
+                          {locale.supported.map(({ languageTag }, i) => (
+                            <li
+                              key={languageTag}
+                              className={kcClsx("kcLocaleListItemClass")}
+                              role="none"
                             >
-                              {labelBySupportedLanguageTag[languageTag]}
-                            </a>
-                          </li>
-                        ))}
-                      </ul>
+                              <a
+                                role="menuitem"
+                                id={`language-${i + 1}`}
+                                className={kcClsx("kcLocaleItemClass")}
+                                href={getChangeLocaleUrl(languageTag)}
+                              >
+                                {labelBySupportedLanguageTag[languageTag]}
+                              </a>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
                     </div>
-                  </div>
-                </div>
-              )}
-            {(() => {
-              const node = !(
-                auth !== undefined &&
-                auth.showUsername &&
-                !auth.showResetCredentials
-              ) ? (
-                <h1 id="kc-page-title">{headerNode}</h1>
-              ) : (
-                <div id="kc-username" className={kcClsx("kcFormGroupClass")}>
-                  <label id="kc-attempted-username">
-                    {auth.attemptedUsername}
-                  </label>
-                  <a
-                    id="reset-login"
-                    href={url.loginRestartFlowUrl}
-                    aria-label={msgStr("restartLoginTooltip")}
-                  >
-                    <div className="kc-login-tooltip">
-                      <i className={kcClsx("kcResetFlowIcon")}></i>
-                      <span className="kc-tooltip-text">
-                        {msg("restartLoginTooltip")}
-                      </span>
-                    </div>
-                  </a>
-                </div>
-              );
-
-              if (displayRequiredFields) {
-                return (
-                  <div className={kcClsx("kcContentWrapperClass")}>
-                    <div
-                      className={clsx(
-                        kcClsx("kcLabelWrapperClass"),
-                        "subtitle",
-                      )}
-                    >
-                      <span className="subtitle">
-                        <span className="required">*</span>
-                        {msg("requiredFields")}
-                      </span>
-                    </div>
-                    <div className="col-md-10">{node}</div>
-                  </div>
-                );
-              }
-
-              return node;
-            })()}
-          </header>
-          <div id="kc-content">
-            <div id="kc-content-wrapper">
-              {displayMessage &&
-                message !== undefined &&
-                (message.type !== "warning" || !isAppInitiatedAction) && (
-                  <div
-                    className={clsx(
-                      `alert-${message.type}`,
-                      kcClsx("kcAlertClass"),
-                      `pf-m-${message?.type === "error" ? "danger" : message.type}`,
-                    )}
-                  >
-                    <div className="pf-c-alert__icon">
-                      {message.type === "success" && (
-                        <span
-                          className={kcClsx("kcFeedbackSuccessIcon")}
-                        ></span>
-                      )}
-                      {message.type === "warning" && (
-                        <span
-                          className={kcClsx("kcFeedbackWarningIcon")}
-                        ></span>
-                      )}
-                      {message.type === "error" && (
-                        <span className={kcClsx("kcFeedbackErrorIcon")}></span>
-                      )}
-                      {message.type === "info" && (
-                        <span className={kcClsx("kcFeedbackInfoIcon")}></span>
-                      )}
-                    </div>
-                    <span
-                      className={kcClsx("kcAlertTitleClass")}
-                      dangerouslySetInnerHTML={{
-                        __html: message.summary,
-                      }}
-                    />
                   </div>
                 )}
-              {children}
-              {auth !== undefined && auth.showTryAnotherWayLink && (
-                <form
-                  id="kc-select-try-another-way-form"
-                  action={url.loginAction}
-                  method="post"
-                >
-                  <div className={kcClsx("kcFormGroupClass")}>
-                    <input type="hidden" name="tryAnotherWay" value="on" />
+              {(() => {
+                const node = !(
+                  auth !== undefined &&
+                  auth.showUsername &&
+                  !auth.showResetCredentials
+                ) ? (
+                  <h1 id="kc-page-title">{headerNode}</h1>
+                ) : (
+                  <div id="kc-username" className={kcClsx("kcFormGroupClass")}>
+                    <label id="kc-attempted-username">
+                      {auth.attemptedUsername}
+                    </label>
                     <a
-                      href="#"
-                      id="try-another-way"
-                      onClick={() => {
-                        document.forms[
-                          "kc-select-try-another-way-form" as never
-                        ].submit();
-                        return false;
-                      }}
+                      id="reset-login"
+                      href={url.loginRestartFlowUrl}
+                      aria-label={msgStr("restartLoginTooltip")}
                     >
-                      {msg("doTryAnotherWay")}
+                      <div className="kc-login-tooltip">
+                        <i className={kcClsx("kcResetFlowIcon")}></i>
+                        <span className="kc-tooltip-text">
+                          {msg("restartLoginTooltip")}
+                        </span>
+                      </div>
                     </a>
                   </div>
-                </form>
-              )}
-              {socialProvidersNode}
-              {displayInfo && (
-                <div id="kc-info" className={kcClsx("kcSignUpClass")}>
-                  <div
-                    id="kc-info-wrapper"
-                    className={kcClsx("kcInfoAreaWrapperClass")}
+                );
+
+                if (displayRequiredFields) {
+                  return (
+                    <div className={kcClsx("kcContentWrapperClass")}>
+                      <div
+                        className={clsx(
+                          kcClsx("kcLabelWrapperClass"),
+                          "subtitle",
+                        )}
+                      >
+                        <span className="subtitle">
+                          <span className="required">*</span>
+                          {msg("requiredFields")}
+                        </span>
+                      </div>
+                      <div className="col-md-10">{node}</div>
+                    </div>
+                  );
+                }
+
+                return node;
+              })()}
+            </header>
+            <div id="kc-content">
+              <div id="kc-content-wrapper">
+                {displayMessage &&
+                  message !== undefined &&
+                  (message.type !== "warning" || !isAppInitiatedAction) && (
+                    <div
+                      className={clsx(
+                        `alert-${message.type}`,
+                        kcClsx("kcAlertClass"),
+                        `pf-m-${message?.type === "error" ? "danger" : message.type}`,
+                      )}
+                    >
+                      <div className="pf-c-alert__icon">
+                        {message.type === "success" && (
+                          <span
+                            className={kcClsx("kcFeedbackSuccessIcon")}
+                          ></span>
+                        )}
+                        {message.type === "warning" && (
+                          <span
+                            className={kcClsx("kcFeedbackWarningIcon")}
+                          ></span>
+                        )}
+                        {message.type === "error" && (
+                          <span
+                            className={kcClsx("kcFeedbackErrorIcon")}
+                          ></span>
+                        )}
+                        {message.type === "info" && (
+                          <span className={kcClsx("kcFeedbackInfoIcon")}></span>
+                        )}
+                      </div>
+                      <span
+                        className={kcClsx("kcAlertTitleClass")}
+                        dangerouslySetInnerHTML={{
+                          __html: message.summary,
+                        }}
+                      />
+                    </div>
+                  )}
+                {children}
+                {auth !== undefined && auth.showTryAnotherWayLink && (
+                  <form
+                    id="kc-select-try-another-way-form"
+                    action={url.loginAction}
+                    method="post"
                   >
-                    {infoNode}
-                  </div>
-                </div>
-              )}
+                    <div className={kcClsx("kcFormGroupClass")}>
+                      <input type="hidden" name="tryAnotherWay" value="on" />
+                      <a
+                        href="#"
+                        id="try-another-way"
+                        onClick={() => {
+                          document.forms[
+                            "kc-select-try-another-way-form" as never
+                          ].submit();
+                          return false;
+                        }}
+                      >
+                        {msg("doTryAnotherWay")}
+                      </a>
+                    </div>
+                  </form>
+                )}
+                {socialProvidersNode}
+                {displayInfo && <CardFooter>{infoNode}</CardFooter>}
+              </div>
             </div>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
       </div>
     </MainLayout>
   );
