@@ -19,8 +19,6 @@ import {
   CardContent,
   CardFooter,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@radix-ui/react-dropdown-menu";
 export default function Template(props: TemplateProps<KcContext, I18n>) {
   const {
     displayInfo = false,
