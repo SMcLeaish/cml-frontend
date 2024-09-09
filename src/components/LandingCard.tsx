@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Logo from "@/components/Logo";
+import { Link } from "react-router-dom";
 
 const LandingCard: React.FC = () => {
   return (
@@ -25,7 +26,7 @@ const LandingCard: React.FC = () => {
         <CardContent>
           <div className="grid w-full items-center gap-4">
             <Button asChild>
-              <a href="https://api.civmillabs.com/login">Network Analysis</a>
+              <Link to="/demo">Network Analysis</Link>
             </Button>
             <Button asChild>
               <a href="https://api.civmillabs.com/login">GIS</a>

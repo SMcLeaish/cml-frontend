@@ -1,13 +1,16 @@
 import { ThemeProvider } from "@/components/theme-provider";
-import LandingCard from "./components/LandingCard";
 import MainLayout from "@/layouts/main-layout";
+import React from "react";
+import { BrowserRouter as Router } from "react-router-dom";
+import AppRouter from "./routes";
 function App() {
   return (
-    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      <MainLayout title="CML">
-        <LandingCard />
-      </MainLayout>
-    </ThemeProvider>
+    <Router>
+      <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+        <MainLayout title="CML" />
+        <AppRouter />
+      </ThemeProvider>
+    </Router>
   );
 }
 

@@ -5,13 +5,9 @@ import "@/styles/globals.css";
 
 interface MainLayoutProps {
   title?: string;
-  children: React.ReactNode;
 }
 
-const MainLayout: React.FC<MainLayoutProps> = ({
-  title = "CivMil Labs",
-  children,
-}) => {
+const MainLayout: React.FC<MainLayoutProps> = ({ title = "CivMil Labs" }) => {
   const [isKeycloakPage, setIsKeycloakPage] = useState(false);
 
   useEffect(() => {
@@ -33,7 +29,6 @@ const MainLayout: React.FC<MainLayoutProps> = ({
       <header>
         <Navbar isKeycloakPage={isKeycloakPage} />
       </header>
-      <main>{children}</main>
     </>
   );
 };
