@@ -22,7 +22,7 @@ if (import.meta.env.DEV) {
 const oidcConfig = {
   authority: "https://auth.civmillabs.com/realms/civmillabs",
   client_id: "cml-frontend-client",
-  redirect_uri: "https://civmillabs.com/callback",
+  redirect_uri: "https://civmillabs.com",
   onSigninCallback: (user: User | void) => {
     const cleanUrl = window.location.origin + window.location.pathname;
     window.history.replaceState({}, document.title, cleanUrl);
