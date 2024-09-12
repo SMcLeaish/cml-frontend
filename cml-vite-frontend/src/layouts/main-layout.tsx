@@ -1,23 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { ReactNode } from "react";
 import { Helmet } from "react-helmet";
 import Navbar from "../components/navbar";
 import "@/styles/globals.css";
 
 interface MainLayoutProps {
   title?: string;
+  children?: ReactNode;
 }
 
-const MainLayout: React.FC<MainLayoutProps> = ({ title = "CivMil Labs" }) => {
-  const [isKeycloakPage, setIsKeycloakPage] = useState(false);
-
-  useEffect(() => {
-    if (window.kcContext) {
-      setIsKeycloakPage(true);
-    } else {
-      setIsKeycloakPage(false);
-    }
-  }, []);
-
+const MainLayout: React.FC<MainLayoutProps> = ({ title, children }) => {
   return (
     <>
       <Helmet>
@@ -26,9 +17,12 @@ const MainLayout: React.FC<MainLayoutProps> = ({ title = "CivMil Labs" }) => {
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <title>{title}</title>
       </Helmet>
-      <header>
-        <Navbar isKeycloakPage={isKeycloakPage} />
+      <header className="w-full">
+        <Navbar />
       </header>
+      <main className="w-full flex items-center justify-center min-h-screen  px-4">
+        {children}
+      </main>
     </>
   );
 };

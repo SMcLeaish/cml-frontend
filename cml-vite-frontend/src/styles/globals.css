@@ -71,10 +71,6 @@
     body {
       @apply bg-background text-foreground;
     }
-    body.kcBodyClass {
-      @apply bg-background text-foreground;
-      background-image: none;
-    }
   }
 }
 
@@ -84,9 +80,5 @@
   }
   body {
     @apply bg-background text-foreground;
-  }
-  body.kcBodyClass {
-    @apply bg-background text-foreground;
-    background-image: none;
   }
 }
