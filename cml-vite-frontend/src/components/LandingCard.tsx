@@ -5,13 +5,15 @@ import {
   CardTitle,
   CardDescription,
   CardContent,
-  CardFooter,
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import Logo from "@/components/Logo";
 import { Link } from "react-router-dom";
+import { useAuth } from "react-oidc-context";
 
 const LandingCard: React.FC = () => {
+  const auth = useAuth();
+
   return (
     <div className="max-w-md mx-auto mt-10">
       <Card>
@@ -19,28 +21,36 @@ const LandingCard: React.FC = () => {
           <CardTitle>
             <Logo />
           </CardTitle>
-          <CardDescription>
-            Powerful tools for visualization, transformation, and analysis
-          </CardDescription>
+          {auth.isAuthenticated ? (
+            <CardDescription>Try a demo of one of our projects</CardDescription>
+          ) : (
+            <CardDescription>
+              Powerful tools for visualization, transformation, and analysis
+            </CardDescription>
+          )}
         </CardHeader>
+
         <CardContent>
-          <div className="grid w-full items-center gap-4">
-            <Button asChild>
-              <Link to="/demo">Network Analysis</Link>
-            </Button>
-            <Button asChild>
-              <a href="https://api.civmillabs.com/login">GIS</a>
-            </Button>
-            <Button asChild>
-              <a href="https://api.civmillabs.com/login">Machine Learning</a>
-            </Button>
-          </div>
+          {auth.isAuthenticated ? (
+            <div className="grid w-full items-center gap-4">
+              <Button asChild>
+                <Link to="/demo">Network Analysis</Link>
+              </Button>
+            </div>
+          ) : (
+            <div className="flex flex-col gap-4">
+              <button
+                className={buttonVariants({ variant: "secondary" })}
+                onClick={() => void auth.signinRedirect()}
+              >
+                Log in
+              </button>
+              <Button variant="secondary" asChild>
+                <a href="/register">Register</a>
+              </Button>
+            </div>
+          )}
         </CardContent>
-        <CardFooter>
-          <Button variant="secondary" asChild>
-            <a href="/register">Register Now</a>
-          </Button>
-        </CardFooter>
       </Card>
     </div>
   );
