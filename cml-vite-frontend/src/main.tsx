@@ -3,6 +3,7 @@ import { User } from "oidc-client-ts";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
+import "@/styles/globals.css";
 import "./index.css";
 
 const oidcConfig = {
