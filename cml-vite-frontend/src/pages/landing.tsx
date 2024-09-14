@@ -1,7 +1,7 @@
 import React from "react";
 import Navbar from "@/components/navbar";
 import MainLayout from "@/layouts/main-layout";
-import LandingCard from "@/components/LandingCard";
+import LandingCard from "@/components/landing-card";
 
 const LandingPage: React.FC = () => {
   return (

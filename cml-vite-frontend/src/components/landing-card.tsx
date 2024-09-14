@@ -15,7 +15,7 @@ const LandingCard: React.FC = () => {
   const auth = useAuth();
 
   return (
-    <div className="max-w-md mx-auto mt-10">
+    <div className="max-w-md mx-auto mt-6 md:mt-4 lg:mt-2">
       <Card>
         <CardHeader>
           <CardTitle>
@@ -34,18 +34,13 @@ const LandingCard: React.FC = () => {
           {auth.isAuthenticated ? (
             <div className="grid w-full items-center gap-4">
               <Button asChild>
-                <Link to="/demo">Network Analysis</Link>
+                <Link to="/dashboard">Network Analysis</Link>
               </Button>
             </div>
           ) : (
             <div className="flex flex-col gap-4">
-              <button
-                className={buttonVariants({ variant: "secondary" })}
-                onClick={() => void auth.signinRedirect()}
-              >
-                Log in
-              </button>
-              <Button variant="secondary" asChild>
+              <Button onClick={() => void auth.signinRedirect()}>Log in</Button>
+              <Button asChild>
                 <a href="/register">Register</a>
               </Button>
             </div>

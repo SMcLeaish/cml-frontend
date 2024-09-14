@@ -17,7 +17,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ title, header, children }) => {
         <title>{title}</title>
       </Helmet>
       <header className="w-full">{header}</header>
-      <main className="w-full flex items-center justify-center min-h-screen  px-4">
+      <main className="w-full flex items-start justify-center min-h-screen px-4">
         {children}
       </main>
     </>

@@ -1,14 +1,14 @@
 import { Route, Routes } from "react-router-dom";
 import LandingPage from "./pages/landing";
-import GcdfDemo from "./pages/gcdf-na-demo";
+import { Dashboard } from "./pages/dashboard";
 
-function AppRouter() {
+const AppRouter: React.FC = () => {
   return (
     <Routes>
       <Route path="/" element={<LandingPage />} />
-      <Route path="/demo" element={<GcdfDemo />} />
+      <Route path="/dashboard" element={<Dashboard />} />
     </Routes>
   );
-}
+};
 
 export default AppRouter;
