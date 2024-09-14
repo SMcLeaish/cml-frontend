@@ -1,7 +1,6 @@
-import React from "react";
-import Navbar from "@/components/navbar";
-import MainLayout from "@/layouts/main-layout";
-import LandingCard from "@/components/landing-card";
+import { Navbar } from "@/components/navbar";
+import { MainLayout } from "@/layouts/main-layout";
+import { LandingCard } from "@/components/landing-card";
 
 const LandingPage: React.FC = () => {
   return (
