@@ -7,7 +7,11 @@ interface MainLayoutProps {
   children?: ReactNode;
 }
 
-const MainLayout: React.FC<MainLayoutProps> = ({ title, header, children }) => {
+export const MainLayout: React.FC<MainLayoutProps> = ({
+  title,
+  header,
+  children,
+}) => {
   return (
     <>
       <Helmet>
@@ -23,5 +27,3 @@ const MainLayout: React.FC<MainLayoutProps> = ({ title, header, children }) => {
     </>
   );
 };
-
-export default MainLayout;

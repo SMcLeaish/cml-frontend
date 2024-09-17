@@ -2,7 +2,7 @@ import React from "react";
 import { useAuth } from "react-oidc-context";
 import { buttonVariants } from "./ui/button";
 
-const AuthButton: React.FC = () => {
+export const AuthButton: React.FC = () => {
   const auth = useAuth();
 
   if (auth.activeNavigator === "signinSilent" || auth.isLoading) {
@@ -41,5 +41,3 @@ const AuthButton: React.FC = () => {
     </button>
   );
 };
-
-export default AuthButton;

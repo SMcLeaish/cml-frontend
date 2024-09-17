@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Card,
   CardHeader,
@@ -6,49 +5,53 @@ import {
   CardDescription,
   CardContent,
 } from "@/components/ui/card";
-import { Button, buttonVariants } from "@/components/ui/button";
-import Logo from "@/components/Logo";
+import { Button } from "@/components/ui/button";
+import { Logo } from "@/components/logo";
 import { Link } from "react-router-dom";
 import { useAuth } from "react-oidc-context";
 
-const LandingCard: React.FC = () => {
+export const LandingCard: React.FC = () => {
   const auth = useAuth();
 
   return (
-    <div className="max-w-md mx-auto mt-6 md:mt-4 lg:mt-2">
-      <Card>
-        <CardHeader>
-          <CardTitle>
-            <Logo />
-          </CardTitle>
-          {auth.isAuthenticated ? (
-            <CardDescription>Try a demo of one of our projects</CardDescription>
-          ) : (
+    <div className="flex items-center justify-center w-1/2 mx-auto">
+      <div className="w-full max-w-lg px-4 py-16 ">
+        <Card className="bg-gradient-to-r from-gray-500 to-purple-700 shadow-xl rounded-lg border-none ">
+          <CardHeader>
+            <CardTitle className="font-normal tracking-widest">
+              <Logo />
+            </CardTitle>
             <CardDescription>
-              Powerful tools for visualization, transformation, and analysis
+              {auth.isAuthenticated ? "Try a demo of one of our projects" : ""}
             </CardDescription>
-          )}
-        </CardHeader>
-
-        <CardContent>
-          {auth.isAuthenticated ? (
-            <div className="grid w-full items-center gap-4">
-              <Button asChild>
-                <Link to="/dashboard">Network Analysis</Link>
-              </Button>
+          </CardHeader>
+          <CardContent>
+            <div className="flex flex-col items-center gap-4">
+              {auth.isAuthenticated ? (
+                <Button asChild>
+                  <Link to="/dashboard" className="w-full py-2">
+                    Network Analysis
+                  </Link>
+                </Button>
+              ) : (
+                <>
+                  <Button
+                    onClick={() => auth.signinRedirect()}
+                    className="w-full py-2"
+                  >
+                    Log in
+                  </Button>
+                  <Button asChild>
+                    <a href="/register" className="w-full py-2">
+                      Register
+                    </a>
+                  </Button>
+                </>
+              )}
             </div>
-          ) : (
-            <div className="flex flex-col gap-4">
-              <Button onClick={() => void auth.signinRedirect()}>Log in</Button>
-              <Button asChild>
-                <a href="/register">Register</a>
-              </Button>
-            </div>
-          )}
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 };
-
-export default LandingCard;
