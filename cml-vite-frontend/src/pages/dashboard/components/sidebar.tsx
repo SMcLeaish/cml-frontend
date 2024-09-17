@@ -27,9 +27,11 @@ export const Sidebar: React.FC = ({ activeTab, setActiveTab }) => {
         <Tooltip>
           <TooltipTrigger asChild>
             <Button
-              variant="ghost"
+              variant={activeTab === "document" ? "outline" : "ghost"}
               size="icon"
-              className="rounded-lg bg-muted"
+              className={
+                activeTab === "document" ? "rounded-lg bg-muted" : "rounded-lg"
+              }
               aria-label="Document"
               onClick={() => setActiveTab("document")}
             >
@@ -43,10 +45,12 @@ export const Sidebar: React.FC = ({ activeTab, setActiveTab }) => {
         <Tooltip>
           <TooltipTrigger asChild>
             <Button
-              variant="ghost"
+              variant={activeTab === "table" ? "outline" : "ghost"}
               size="icon"
-              className="rounded-lg"
-              aria-label="Table"
+              className={
+                activeTab === "table" ? "rounded-lg bg-secondary" : "rounded-lg"
+              }
+              aria-label="table"
               onClick={() => setActiveTab("table")}
             >
               <Table className="size-5" />
@@ -59,10 +63,12 @@ export const Sidebar: React.FC = ({ activeTab, setActiveTab }) => {
         <Tooltip>
           <TooltipTrigger asChild>
             <Button
-              variant="ghost"
+              variant={activeTab === "map" ? "outline" : "ghost"}
               size="icon"
-              className="rounded-lg"
-              aria-label="Map"
+              className={
+                activeTab === "map" ? "rounded-lg bg-secondary" : "rounded-lg"
+              }
+              aria-label="map"
               onClick={() => setActiveTab("map")}
             >
               <Map className="size-5" />
@@ -75,10 +81,14 @@ export const Sidebar: React.FC = ({ activeTab, setActiveTab }) => {
         <Tooltip>
           <TooltipTrigger asChild>
             <Button
-              variant="ghost"
+              variant={activeTab === "network" ? "outline" : "ghost"}
               size="icon"
-              className="rounded-lg"
-              aria-label="Network"
+              className={
+                activeTab === "network"
+                  ? "rounded-lg bg-secondary"
+                  : "rounded-lg"
+              }
+              aria-label="network"
               onClick={() => setActiveTab("network")}
             >
               <ChartNetwork className="size-5" />
@@ -91,9 +101,11 @@ export const Sidebar: React.FC = ({ activeTab, setActiveTab }) => {
         <Tooltip>
           <TooltipTrigger asChild>
             <Button
-              variant="ghost"
+              variant={activeTab === "llm" ? "outline" : "ghost"}
               size="icon"
-              className="rounded-lg"
+              className={
+                activeTab === "llm" ? "rounded-lg bg-secondary" : "rounded-lg"
+              }
               aria-label="LLM"
               onClick={() => setActiveTab("llm")}
             >
@@ -107,9 +119,13 @@ export const Sidebar: React.FC = ({ activeTab, setActiveTab }) => {
         <Tooltip>
           <TooltipTrigger asChild>
             <Button
-              variant="ghost"
+              variant={activeTab === "settings" ? "outline" : "ghost"}
               size="icon"
-              className="rounded-lg"
+              className={
+                activeTab === "settings"
+                  ? "rounded-lg bg-secondary"
+                  : "rounded-lg"
+              }
               aria-label="Settings"
               onClick={() => setActiveTab("settings")}
             >
