@@ -15,7 +15,15 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-export const Sidebar: React.FC = ({ activeTab, setActiveTab }) => {
+import { useStore } from "@nanostores/react";
+import { activeTabStore } from "@/stores/active-tab-store";
+
+export const Sidebar: React.FC = () => {
+  const activeTab = useStore(activeTabStore);
+
+  const handleTabChange = (tab: string) => {
+    activeTabStore.set(tab);
+  };
   return (
     <aside className="inset-y fixed  left-0 z-20 flex h-full flex-col border-r">
       <div className="border-b p-2">
@@ -33,7 +41,7 @@ export const Sidebar: React.FC = ({ activeTab, setActiveTab }) => {
                 activeTab === "document" ? "rounded-lg bg-muted" : "rounded-lg"
               }
               aria-label="Document"
-              onClick={() => setActiveTab("document")}
+              onClick={() => handleTabChange("document")}
             >
               <FileText className="size-5" />
             </Button>
@@ -51,7 +59,7 @@ export const Sidebar: React.FC = ({ activeTab, setActiveTab }) => {
                 activeTab === "table" ? "rounded-lg bg-secondary" : "rounded-lg"
               }
               aria-label="table"
-              onClick={() => setActiveTab("table")}
+              onClick={() => handleTabChange("table")}
             >
               <Table className="size-5" />
             </Button>
@@ -69,7 +77,7 @@ export const Sidebar: React.FC = ({ activeTab, setActiveTab }) => {
                 activeTab === "map" ? "rounded-lg bg-secondary" : "rounded-lg"
               }
               aria-label="map"
-              onClick={() => setActiveTab("map")}
+              onClick={() => handleTabChange("map")}
             >
               <Map className="size-5" />
             </Button>
@@ -89,7 +97,7 @@ export const Sidebar: React.FC = ({ activeTab, setActiveTab }) => {
                   : "rounded-lg"
               }
               aria-label="network"
-              onClick={() => setActiveTab("network")}
+              onClick={() => handleTabChange("network")}
             >
               <ChartNetwork className="size-5" />
             </Button>
@@ -107,7 +115,7 @@ export const Sidebar: React.FC = ({ activeTab, setActiveTab }) => {
                 activeTab === "llm" ? "rounded-lg bg-secondary" : "rounded-lg"
               }
               aria-label="LLM"
-              onClick={() => setActiveTab("llm")}
+              onClick={() => handleTabChange("llm")}
             >
               <Bot className="size-5" />
             </Button>
@@ -127,7 +135,7 @@ export const Sidebar: React.FC = ({ activeTab, setActiveTab }) => {
                   : "rounded-lg"
               }
               aria-label="Settings"
-              onClick={() => setActiveTab("settings")}
+              onClick={() => handleTabChange("settings")}
             >
               <Settings2 className="size-5" />
             </Button>
