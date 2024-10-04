@@ -3,10 +3,12 @@ import axios from "axios";
 import { useStore } from "@nanostores/react";
 import { filesStore } from "@/stores/files-store";
 import { useDropzone } from "react-dropzone";
+import { CloudUpload } from "lucide-react";
 
 export const FileUpload: React.FC = () => {
   const { files } = useStore(filesStore);
   const onDrop = (acceptedFiles: File[]) => {
+    console.log("Files dropped: ", acceptedFiles);
     acceptedFiles.forEach((file) => {
       const formData = new FormData();
       formData.append("file", file);
@@ -30,11 +32,17 @@ export const FileUpload: React.FC = () => {
     onDrop,
     accept: { "text/csv": [".csv"] },
   });
-
   return (
-    <div {...getRootProps()}>
-      <input {...getInputProps()} />
-      <p>Drag and drop files here, or click to select files</p>
+    <div
+      {...getRootProps()}
+      className="flex flex-col items-center justify-center p-10 border-2 border-dashed border-gray-300 rounded-lg  transition-colors duration-300 cursor-pointer"
+    >
+      <CloudUpload className="w-8 h-8 mb-4" />
+      <input {...getInputProps()} className="hidden" />
+
+      <p className="mb-4 text-gray-500">
+        Drag and drop files here or click to select
+      </p>
     </div>
   );
 };

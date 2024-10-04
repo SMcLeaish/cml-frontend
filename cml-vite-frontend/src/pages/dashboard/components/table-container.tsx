@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { useStore } from "@nanostores/react";
 import { filesStore } from "@/stores/files-store";
-import Papa from "papaparse";
 import { Button } from "@/components/ui/button";
 import {
   Select,
@@ -13,55 +13,35 @@ import {
 
 export const TableContainer: React.FC = () => {
   const { files, currentFileId } = useStore(filesStore);
-  const [csvData, setCsvData] = useState<any[]>([]);
+  const [csvData, setCsvData] = useState<string[][]>([]);
+  const [headers, setHeaders] = useState<string[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [rowsPerPage, setRowsPerPage] = useState<number>(10);
-  const [editingRow, setEditingRow] = useState<number | null>(null);
+  const [totalRows, setTotalRows] = useState<number>(0);
 
   useEffect(() => {
-    const loadFile = async () => {
-      if (currentFileId) {
-        const file = files.find((f) => f.name === currentFileId);
-        if (file) {
-          const text = await file.text();
-          Papa.parse(text, {
-            header: true,
-            skipEmptyLines: true,
-            complete: (results) => {
-              setCsvData(results.data);
-              setCurrentPage(1);
-            },
-            error: (error) => {
-              console.error("Error parsing CSV:", error);
-            },
-          });
+    const fetchCSVData = async () => {
+      const selectedFile = files.find((f) => f.id === currentFileId);
+      if (selectedFile && selectedFile.id) {
+        try {
+          const response = await axios.get(
+            `https://api.civmillabs.com/csv/${selectedFile.id}?page=${currentPage}&rows_per_page=${rowsPerPage}`,
+          );
+          setHeaders(response.data.headers);
+          setCsvData(response.data.data);
+          setTotalRows(response.data.total_rows);
+        } catch (error) {
+          console.error("Error fetching CSV data:", error);
         }
-      } else {
-        setCsvData([]);
       }
     };
-    loadFile();
-  }, [currentFileId, files]);
 
-  const handleEdit = (rowIndex: number) => {
-    setEditingRow(rowIndex);
-  };
+    if (currentFileId) {
+      fetchCSVData();
+    }
+  }, [currentFileId, files, currentPage, rowsPerPage]);
 
-  const handleSave = (rowIndex: number, updatedRow: any) => {
-    const updatedData = [...csvData];
-    updatedData[rowIndex] = updatedRow;
-    setCsvData(updatedData);
-    setEditingRow(null);
-  };
-
-  const handleCancel = () => {
-    setEditingRow(null);
-  };
-
-  const indexOfLastRow = currentPage * rowsPerPage;
-  const indexOfFirstRow = indexOfLastRow - rowsPerPage;
-  const currentRows = csvData.slice(indexOfFirstRow, indexOfLastRow);
-  const totalPages = Math.ceil(csvData.length / rowsPerPage);
+  const totalPages = Math.ceil(totalRows / rowsPerPage);
 
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
@@ -81,86 +61,24 @@ export const TableContainer: React.FC = () => {
             <table className="w-full table-auto border-collapse">
               <thead>
                 <tr className="bg-muted">
-                  {csvData.length > 0 &&
-                    Object.keys(csvData[0]).map((header, index) => (
-                      <th
-                        key={index}
-                        className="px-4 py-2 text-left font-medium text-muted-foreground"
-                      >
-                        {header}
-                      </th>
-                    ))}
-                  <th className="px-4 py-2 text-left font-medium text-muted-foreground">
-                    Actions
-                  </th>
+                  {headers.map((header, index) => (
+                    <th
+                      key={index}
+                      className="px-4 py-2 text-left font-medium text-muted-foreground"
+                    >
+                      {header}
+                    </th>
+                  ))}
                 </tr>
               </thead>
               <tbody>
-                {currentRows.map((row, index) => (
-                  <tr
-                    key={index}
-                    className={`border-b ${
-                      editingRow === index ? "bg-muted/20" : "hover:bg-muted/10"
-                    }`}
-                  >
-                    {Object.keys(row).map((key, colIndex) => (
-                      <td
-                        key={colIndex}
-                        className="px-4 py-2 text-left"
-                        contentEditable={editingRow === index}
-                        onBlur={(e) => {
-                          if (editingRow === index) {
-                            const updatedRow = {
-                              ...row,
-                              [key]: e.currentTarget.textContent,
-                            };
-                            handleSave(
-                              index + (currentPage - 1) * rowsPerPage,
-                              updatedRow,
-                            );
-                          }
-                        }}
-                      >
-                        {row[key]}
+                {csvData.map((row, index) => (
+                  <tr key={index} className="border-b hover:bg-muted/10">
+                    {row.map((cell: string, colIndex: number) => (
+                      <td key={colIndex} className="px-4 py-2 text-left">
+                        {cell}
                       </td>
                     ))}
-                    <td className="px-4 py-2 text-left">
-                      {editingRow === index ? (
-                        <>
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            className="mr-2"
-                            type="button"
-                            onClick={() =>
-                              handleSave(
-                                index + (currentPage - 1) * rowsPerPage,
-                                currentRows[index],
-                              )
-                            }
-                          >
-                            Save
-                          </Button>
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            type="button"
-                            onClick={handleCancel}
-                          >
-                            Cancel
-                          </Button>
-                        </>
-                      ) : (
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          type="button"
-                          onClick={() => handleEdit(index)}
-                        >
-                          Edit
-                        </Button>
-                      )}
-                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -192,14 +110,14 @@ export const TableContainer: React.FC = () => {
                 disabled={currentPage === 1}
                 onClick={() => handlePageChange(currentPage - 1)}
               >
-                <ChevronLeftIcon className="w-4 h-4" />
+                Previous
               </Button>
               {Array.from({ length: totalPages }, (_, i) => i + 1).map(
                 (pageNumber) => (
                   <Button
                     key={pageNumber}
                     size="sm"
-                    variant={currentPage === pageNumber ? "solid" : "outline"}
+                    variant={currentPage === pageNumber ? "default" : "outline"}
                     type="button"
                     onClick={() => handlePageChange(pageNumber)}
                     className={
@@ -219,7 +137,7 @@ export const TableContainer: React.FC = () => {
                 disabled={currentPage === totalPages}
                 onClick={() => handlePageChange(currentPage + 1)}
               >
-                <ChevronRightIcon className="w-4 h-4" />
+                Next
               </Button>
             </div>
           </div>
@@ -230,36 +148,3 @@ export const TableContainer: React.FC = () => {
     </div>
   );
 };
-
-// Icon components
-function ChevronLeftIcon(props: React.SVGProps<SVGSVGElement>) {
-  return (
-    <svg
-      {...props}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M15 18l-6-6 6-6" />
-    </svg>
-  );
-}
-
-function ChevronRightIcon(props: React.SVGProps<SVGSVGElement>) {
-  return (
-    <svg
-      {...props}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M9 18l6-6-6-6" />
-    </svg>
-  );
-}

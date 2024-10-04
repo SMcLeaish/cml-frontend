@@ -9,9 +9,9 @@ export const TableMain: React.FC = () => {
         x-chunk="dashboard-03-chunk-0"
       >
         <form className="grid w-full items-start gap-6">
+          <FileUpload />
           <fieldset className="grid gap-6 rounded-lg border p-4">
-            <legend className="-ml-1 px-1 text-sm font-medium">Upload</legend>
-            <FileUpload />
+            <legend className="-ml-1 px-1 text-sm font-medium">Uploaded</legend>
             <FileList />
           </fieldset>
         </form>
