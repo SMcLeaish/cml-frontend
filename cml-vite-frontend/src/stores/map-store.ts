@@ -1,11 +1,5 @@
 import { map } from "nanostores";
-
-interface MapEntry {
-  lat: number;
-  lng: number;
-  name?: string;
-  type?: string;
-}
+import { MapEntry } from "@/types/map";
 
 interface MapStoreValue {
   mapData: boolean;
@@ -15,4 +9,10 @@ interface MapStoreValue {
 export const mapStore = map<MapStoreValue>({
   mapData: false,
   coordinates: [],
+});
+
+export const dialogOpenStore = map({
+  dialogOpen: false,
+  dialogDescription:
+    "Coordinates were present in the uploaded data. Would you like to create a map layer?",
 });

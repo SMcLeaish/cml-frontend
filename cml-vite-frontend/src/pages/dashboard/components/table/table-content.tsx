@@ -1,7 +1,7 @@
 import { FileUpload } from "@/pages/dashboard/components/filedrop";
 import { FileList } from "@/pages/dashboard/components/filelist";
 import { TableContainer } from "./table-container";
-export const TableMain: React.FC = () => {
+export const TableContent: React.FC = () => {
   return (
     <>
       <div

@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/logo";
 import { Link } from "react-router-dom";
 import { useAuth } from "react-oidc-context";
+import { ApiTestComponent } from "@/components/auth-test";
 
 export const LandingCard: React.FC = () => {
   const auth = useAuth();
@@ -28,11 +29,14 @@ export const LandingCard: React.FC = () => {
           <CardContent>
             <div className="flex flex-col items-center gap-4">
               {auth.isAuthenticated ? (
-                <Button asChild>
-                  <Link to="/dashboard" className="w-full py-2">
-                    Network Analysis
-                  </Link>
-                </Button>
+                <>
+                  <Button asChild>
+                    <Link to="/dashboard" className="w-full py-2">
+                      Network Analysis
+                    </Link>
+                  </Button>
+                  <ApiTestComponent />
+                </>
               ) : (
                 <>
                   <Button
@@ -42,7 +46,10 @@ export const LandingCard: React.FC = () => {
                     Log in
                   </Button>
                   <Button asChild>
-                    <a href="/register" className="w-full py-2">
+                    <a
+                      href="http://localhost:3501/agent"
+                      className="w-full py-2"
+                    >
                       Register
                     </a>
                   </Button>
