@@ -1,0 +1,19 @@
+---
+import Auth from '../components/auth.astro'; // Import the OIDC authentication component
+---
+
+<html lang="en">
+  <head>
+    <title>Login Page</title>
+  </head>
+  <body>
+    <h1>Welcome to the Site</h1>
+
+    <!-- Render the Auth component to handle authentication -->
+    <Auth />
+
+    <!-- Login and Logout buttons -->
+    <button onclick="signIn()">Log In</button>
+    <button onclick="signOut()">Log Out</button>
+  </body>
+</html>
